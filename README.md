@@ -87,7 +87,9 @@ If you're interested the source code is on [GitHub](https://github.com/crush-157
 
 There is already a container image on Docker Hub [crush157/dogsbody](https://hub.docker.com/r/crush157/dogsbody/).
 
-The Dockerfile is as follows:
+If you prefer to shrink a different image, then you can just use this as an example.  If you want another example you can also look at [How To Build a Tiny Httpd Container](https://hackernoon.com/how-to-build-a-tiny-httpd-container-ae622c37db39).
+
+The Dockerfile for the base Dogsbody image is as follows:
 
 ```
 FROM ruby
