@@ -65,7 +65,7 @@ Once that has finished, you should have a `hello.tgz` file in your working direc
 
 To get Docker to run this, we need to upload it to a Docker repo (e.g. dockerhub) to turn it into Docker format (_standards are wonderful when they're implemented_):
 
-`smith upload -r https://$DOCKER_ID:$DOCKER_PWD@registry-1.docker.io/crush157/hello-smith -i hello.tgz`
+`smith upload -r https://$DOCKER_ID:$DOCKER_PWD@registry-1.docker.io/$DOCKER_ID/hello-smith -i hello.tgz`
 
 Then you should be able to run it:
 ```
