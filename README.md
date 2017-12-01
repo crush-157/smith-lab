@@ -27,7 +27,7 @@ If the response is something like `smith version 1.1.2.22.bc4d01a (built from sh
 
 ## Building a "hello world" microcontainer from scratch
 1. Create a new directory to build your container in.
-2. **optional:** set environment variables for DOCKER_ID and DOCKER_PWD (reduces RSI and/or typing errors).
+2. Set environment variables for your DOCKER_ID and DOCKER_PWD (as used in the examples below).
 3. Create a smith.yaml file:
 ```
 package: coreutils
@@ -59,6 +59,21 @@ Create a subdirectory `rootfs` from your working directory.  Any files or direct
 
 So to add '/read/data' to the image, create a subdirectory `read` of `rootfs`.  Then under read, create a file `data` and put the string you'd like to display (e.g. 'Hello World!') in it.
 
+So you should have a structure like this:
+```
+[ewan@empiricist cat]$ ls -R
+.:
+rootfs  smith.yaml
+
+./rootfs:
+read
+
+./rootfs/read:
+data
+[ewan@empiricist cat]$ cat rootfs/read/data
+Hello World!
+```
+
 Now switch back to your working directory and run `smith -i hello.tgz`.
 
 Once that has finished, you should have a `hello.tgz` file in your working directory.
@@ -68,8 +83,12 @@ To get Docker to run this, we need to upload it to a Docker repo (e.g. dockerhub
 `smith upload -r https://$DOCKER_ID:$DOCKER_PWD@registry-1.docker.io/$DOCKER_ID/hello-smith -i hello.tgz`
 
 Then you should be able to run it:
+
+`docker run --rm $DOCKER_ID/hello-smith`
+
+For example:
 ```
-ewan@starbug:~/projects/smith-examples/cat$ docker run --rm crush157/hello-smith
+ewan@starbug:~/projects/smith-examples/cat$ docker run --rm $DOCKER_ID/hello-smith
 Unable to find image 'crush157/hello-smith:latest' locally
 latest: Pulling from crush157/hello-smith
 ca43e03ec88e: Pull complete
@@ -149,8 +168,9 @@ cmd:
 ```
 7.  Let's upload it to docker hub, to get an image in Docker format:
 
-```smith upload -r https://$DOCKER_ID:$DOCKER_PWD@registry-1.docker.io/crush157/smith-dogsbody -i dogsbody.tar.gz```
-8.  Now let's try and run it, starting with checking the db schema and updating if necessary:
+`smith upload -r https://$DOCKER_ID:$DOCKER_PWD@registry-1.docker.io/$DOCKER_ID/smith-dogsbody -i dogsbody.tar.gz`
+
+8.  Now let's try and run it.  The first thing we want to do is run `rake db:migrate` which checks the db schema and updates it if necessary.  Replace the MYSQLCS_* environment variables in the example command below with the appropriate values for your database and then run it:
 ```
 ewan@starbug:~/projects/smith-examples/dogsbody$ docker run -it --rm \
 >   --name dogsbody \
@@ -158,10 +178,10 @@ ewan@starbug:~/projects/smith-examples/dogsbody$ docker run -it --rm \
 >   --env MYSQLCS_CONNECT_STRING="172.17.0.1:3306/dogsbody" \
 >   --env MYSQLCS_USER_PASSWORD="Welcome_1" \
 >   --env MYSQLCS_USER_NAME="root" \
->   crush157/smith-dogsbody rake db:migrate
+>   $DOCKER_ID/smith-dogsbody rake db:migrate
 Migrating to latest
 ```
-9.  If returned "Migrating to latest" you should be good to run the service:
+9.  If it returned "Migrating to latest" you should be good to run the service.  Replace the MYSQLCS_* environment variables in the example command below with the appropriate values for your database and then run it:
 ```
 ewan@starbug:~/projects/smith-examples/dogsbody$ docker run -d --rm \
 >   --name dogsbody \
@@ -171,7 +191,7 @@ ewan@starbug:~/projects/smith-examples/dogsbody$ docker run -d --rm \
 >   --env MYSQLCS_USER_NAME="root" \
 >   --env PATH="/usr/local/bin" \
 >   --publish 22222:4567/tcp \
->   crush157/smith-dogsbody
+>   $DOCKER_ID/smith-dogsbody
 5c7931542a7c5b41ab517b451dac37c8224bcca1fb8d1fbd91989c9a887727dc
 ```
 10.  Check that it's running:
