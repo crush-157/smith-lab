@@ -16,6 +16,28 @@ The aims of this exercise are to walk you+ through:
 - a dockerhub account
 
 ## Installing Smith
+### A. As a Docker image
+The easiest way to install Smith is as a Docker image.  Smith can then be run in a container.
+1. Navigate to [https://github.com/oracle/smith](https://github.com/oracle/smith)
+2. Clone the repo to your machine
+3. Build the Docker image using the Dockerfile provided, adding your own docker-repo-id to the tag:
+
+`sudo docker build -t <docker-repo-id>/smith .`
+
+4. Create an alias (or script) to run Smith from the command line:
+```
+smith(){
+    sudo docker run -it --rm \
+    --privileged -v $PWD:/write \
+    -v cache:/var/cache \
+    -v mock:/var/lib/mock <docker-repo-id>/smith $@
+}
+```
+5.  Run `smith --version`
+
+If the response is something like `smith version 1.1.2.22.bc4d01a (built from sha bc4d01a)` then you're in good shape.
+
+### B.  As a binary
 1. Navigate to [https://github.com/oracle/smith](https://github.com/oracle/smith)
 2. Clone the repo to your machine
 3. Install build dependencies (as described in the Smith Readme).
@@ -221,6 +243,7 @@ ewan@starbug:~/projects/smith-examples/dogsbody$ curl -v localhost:22222/users
 []
 ```
 200 is what we want.
+
 11.  Let's check the image size:
 ```
 ewan@starbug:~/projects/smith-examples/dogsbody$ docker images
