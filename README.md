@@ -279,3 +279,4 @@ cmd:
 - app.rb
 - '-e production'
 ```
+12.  Now you've worked through the example, why don't you try to shrink one of your own images?
