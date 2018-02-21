@@ -3,7 +3,7 @@
 ## Introduction
 [Smith](https://github.com/oracle/smith) is a command line tool for building [microcontainers](https://blogs.oracle.com/developers/the-microcontainer-manifesto).
 
-The aims of this exercise are to walk you+ through:
+The aims of this exercise are to walk you through:
 1. Installing Smith
 2. Building a "hello world" microcontainer image from scratch
 3. Shrinking an existing container
