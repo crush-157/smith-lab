@@ -192,7 +192,12 @@ cmd:
 
 `smith upload -r https://$DOCKER_ID:$DOCKER_PWD@registry-1.docker.io/$DOCKER_ID/smith-dogsbody -i dogsbody.tar.gz`
 
-8.  Now let's try and run it.  The first thing we want to do is run `rake db:migrate` which checks the db schema and updates it if necessary.  Replace the MYSQLCS_* environment variables in the example command below with the appropriate values for your database and then run it:
+8. Now let's try and run it.  The first thing we need is a MySQL database.  If you haven't got one already, then run a MySQL container (change the password / ip / port if you want to):
+```
+docker run -d --ip 172.17.0.2 -e MYSQL_ROOT_PASSWORD=Welcome_1 --publish 3306:3306/tcp --name dogsbody_db mysql
+```
+
+9.  The next thing we do is run `rake db:migrate` which checks the db schema and updates it if necessary.  Replace the MYSQLCS_* environment variables in the example command below with the appropriate values for your database and then run it:
 ```
 ewan@starbug:~/projects/smith-examples/dogsbody$ docker run -it --rm \
 >   --name dogsbody \
@@ -203,7 +208,7 @@ ewan@starbug:~/projects/smith-examples/dogsbody$ docker run -it --rm \
 >   $DOCKER_ID/smith-dogsbody rake db:migrate
 Migrating to latest
 ```
-9.  If it returned "Migrating to latest" you should be good to run the service.  Replace the MYSQLCS_* environment variables in the example command below with the appropriate values for your database and then run it:
+10.  If it returned "Migrating to latest" you should be good to run the service.  Replace the MYSQLCS_* environment variables in the example command below with the appropriate values for your database and then run it:
 ```
 ewan@starbug:~/projects/smith-examples/dogsbody$ docker run -d --rm \
 >   --name dogsbody \
@@ -216,7 +221,7 @@ ewan@starbug:~/projects/smith-examples/dogsbody$ docker run -d --rm \
 >   $DOCKER_ID/smith-dogsbody
 5c7931542a7c5b41ab517b451dac37c8224bcca1fb8d1fbd91989c9a887727dc
 ```
-10.  Check that it's running:
+11.  Check that it's running:
 ```
 ewan@starbug:~/projects/smith-examples/dogsbody$ docker ps
 CONTAINER ID        IMAGE                       COMMAND                  CREATED             STATUS                   PORTS                               NAMES
@@ -244,7 +249,7 @@ ewan@starbug:~/projects/smith-examples/dogsbody$ curl -v localhost:22222/users
 ```
 200 is what we want.
 
-11.  Let's check the image size:
+12.  Let's check the image size:
 ```
 ewan@starbug:~/projects/smith-examples/dogsbody$ docker images
 REPOSITORY                 TAG                 IMAGE ID            CREATED             SIZE
@@ -279,4 +284,4 @@ cmd:
 - app.rb
 - '-e production'
 ```
-12.  Now you've worked through the example, why don't you try to shrink one of your own images?
+13.  Now you've worked through the example, why don't you try to shrink one of your own images?
