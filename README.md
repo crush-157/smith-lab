@@ -184,9 +184,9 @@ paths:
 - /usr/local/include/
 - /usr/local/bundle/
 cmd:
-  - ruby
-  - app.rb
-  - '-e production'
+- ruby
+- app.rb
+- '-e production'
 ```
 7.  Let's upload it to docker hub, to get an image in Docker format:
 
