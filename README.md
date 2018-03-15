@@ -30,6 +30,7 @@ smith(){
     sudo docker run -it --rm \
     --privileged -v $PWD:/write \
     -v cache:/var/cache \
+    -v /tmp:/tmp \
     -v mock:/var/lib/mock <docker-repo-id>/smith $@
 }
 ```
@@ -83,7 +84,7 @@ So to add '/read/data' to the image, create a subdirectory `read` of `rootfs`.  
 
 So you should have a structure like this:
 ```
-[ewan@empiricist cat]$ ls -R
+[ewan@starbug cat]$ ls -R
 .:
 rootfs  smith.yaml
 
@@ -92,7 +93,7 @@ read
 
 ./rootfs/read:
 data
-[ewan@empiricist cat]$ cat rootfs/read/data
+[ewan@starbug cat]$ cat rootfs/read/data
 Hello World!
 ```
 
@@ -145,7 +146,7 @@ RUN bundle install
 CMD ./run.sh
 ```
 
-If you pull this down to your machine you'll see that it has a size of 754MB.
+If you pull this down to your machine you'll see that it has a size of 934MB.
 
 Now want to shrink this.
 
@@ -272,12 +273,12 @@ ewan@starbug:~/projects/smith-examples/dogsbody$ curl -v localhost:22222/users
 ```
 ewan@starbug:~/projects/smith-examples/dogsbody$ docker images
 REPOSITORY                 TAG                 IMAGE ID            CREATED             SIZE
-crush157/smith-dogsbody    latest              5bbfc75d826b        12 minutes ago      112MB
+crush157/smith-dogsbody    latest              5bbfc75d826b        12 minutes ago      83.4MB
 crush157/hello-smith       latest              a430ff69520c        2 hours ago         2.3MB
 ruby                       2.4.2-alpine3.6     8647c16e6bb0        8 days ago          72MB
 crush157/smith-httpd       latest              9d1ba46c4fb0        11 days ago         4.76MB
-crush157/squash-dogsbody   latest              a8e0ddf918b5        12 days ago         754MB
-crush157/dogsbody          latest              18e67fa6c47e        12 days ago         754MB
+crush157/squash-dogsbody   latest              a8e0ddf918b5        12 days ago         934MB
+crush157/dogsbody          latest              18e67fa6c47e        12 days ago         934MB
 jruby                      latest              300c281a1aca        13 days ago         594MB
 ruby                       latest              c7715c1eb8fe        2 weeks ago         687MB
 httpd                      latest              74ad7f48867f        2 weeks ago         177MB
@@ -285,7 +286,7 @@ debian                     latest              6d83de432e98        2 weeks ago  
 alpine                     latest              053cde6e8953        2 weeks ago         3.97MB
 mysql/mysql-server         latest              a3ee341faefb        5 weeks ago         246MB
 ```
-And we see that we've gone from 754MB down to 112MB!
+And we see that we've gone from 934MB down to 83.4MB!
 
 With a little extra work, you can even knock of another 2MB!  The smith.yaml for that is:
 ```
