@@ -196,7 +196,7 @@ cmd:
 
 9. Now let's try and run it.  The first thing we need is a MySQL instance.  If you haven't got one already, then run a MySQL container (change the password / ip / port if you want to):
 ```
-docker run -d --ip 172.17.0.2 -e MYSQL_ROOT_PASSWORD=Welcome_1 --publish 3306:3306/tcp --name dogsbody_db mysql
+docker run -d --ip 172.17.0.2 -e MYSQL_ROOT_PASSWORD=Welcome_1 --publish 3306:3306/tcp --name dogsbody_db mysql --default-authentication-plugin=mysql_native_password
 ```
 
 10.  Then we need to create a database "dogsbody".
